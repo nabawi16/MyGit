@@ -11,5 +11,16 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" />
 
+    <fragment
+        android:id="@+id/nav_favorite"
+        android:name="com.nabawi.mygit.ui.favorite.FavoriteFragment"
+        android:label="@string/favorite"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.nabawi.mygit.ui.settings.SettingFragment"
+        android:label="@string/setting"
+        tools:layout="@layout/fragment_setting" />
 
 </navigation>

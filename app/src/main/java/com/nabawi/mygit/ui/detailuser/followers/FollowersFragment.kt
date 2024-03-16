@@ -27,8 +27,10 @@ class FollowersFragment : Fragment(R.layout.fragment_follow) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentFollowBinding.bind(view)
 
-        username = requireActivity().intent.getStringExtra(DetailUserActivity.EXTRA_USERNAME).toString()
-        val numOfFollowers = requireActivity().intent.getIntExtra(DetailUserActivity.EXTRA_FOLLOWERS, 0)
+        username =
+            requireActivity().intent.getStringExtra(DetailUserActivity.EXTRA_USERNAME).toString()
+        val numOfFollowers =
+            requireActivity().intent.getIntExtra(DetailUserActivity.EXTRA_FOLLOWERS, 0)
 
         adapter = UserFollowsAdapter()
 
@@ -37,7 +39,7 @@ class FollowersFragment : Fragment(R.layout.fragment_follow) {
             rvUsers.layoutManager = LinearLayoutManager(activity)
             rvUsers.adapter = adapter
 
-            if (numOfFollowers == 0){
+            if (numOfFollowers == 0) {
                 tvNoDataFollows.visibility = View.VISIBLE
             } else {
                 tvNoDataFollows.visibility = View.GONE
@@ -50,7 +52,7 @@ class FollowersFragment : Fragment(R.layout.fragment_follow) {
         )[FollowersViewModel::class.java]
         searchFollowers()
 
-        adapter.setOnItemClickCallback(object: UserFollowsAdapter.OnItemClickCallback{
+        adapter.setOnItemClickCallback(object : UserFollowsAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserEntity) {
                 Intent(requireContext(), DetailUserActivity::class.java).also {
                     it.putExtra(DetailUserActivity.EXTRA_USERNAME, data.username)
@@ -63,7 +65,7 @@ class FollowersFragment : Fragment(R.layout.fragment_follow) {
         })
     }
 
-    private fun searchFollowers(){
+    private fun searchFollowers() {
         viewModel.setListFollowers(username)
         viewModel.getListFollowers().observe(viewLifecycleOwner) {
             if (it != null) {
@@ -81,13 +83,7 @@ class FollowersFragment : Fragment(R.layout.fragment_follow) {
     }
 
     private fun showLoading(state: Boolean) {
-        binding?.apply {
-            if (state) {
-                progressBar.visibility = View.VISIBLE
-            } else {
-                progressBar.visibility = View.GONE
-            }
-        }
+        binding?.progressBar?.visibility = if (state) View.VISIBLE else View.GONE
     }
 
 }

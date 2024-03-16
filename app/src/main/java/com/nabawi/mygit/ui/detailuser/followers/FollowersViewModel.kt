@@ -1,6 +1,7 @@
 package com.nabawi.mygit.ui.detailuser.followers
 
-import android.util.Log
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,11 @@ import retrofit2.Response
 
 class FollowersViewModel : ViewModel() {
     val listFollowers = MutableLiveData<ArrayList<UserResponse>>()
+
+    private lateinit var context: Context
+    fun setContext(context: Context) {
+        this.context = context
+    }
 
     fun setListFollowers(username: String) {
         RetrofitClient.apiInstance
@@ -27,7 +33,8 @@ class FollowersViewModel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<ArrayList<UserResponse>>, t: Throwable) {
-                    Log.d("Failure", t.message.toString())
+                    val errorMessage = "Terjadi kesalahan: ${t.message}"
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                 }
 
             })

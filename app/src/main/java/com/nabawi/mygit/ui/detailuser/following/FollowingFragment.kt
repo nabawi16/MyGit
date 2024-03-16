@@ -27,8 +27,10 @@ class FollowingFragment : Fragment(R.layout.fragment_follow) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentFollowBinding.bind(view)
 
-        username = requireActivity().intent.getStringExtra(DetailUserActivity.EXTRA_USERNAME).toString()
-        val numOfFollowing = requireActivity().intent.getIntExtra(DetailUserActivity.EXTRA_FOLLOWING, 0)
+        username =
+            requireActivity().intent.getStringExtra(DetailUserActivity.EXTRA_USERNAME).toString()
+        val numOfFollowing =
+            requireActivity().intent.getIntExtra(DetailUserActivity.EXTRA_FOLLOWING, 0)
 
         adapter = UserFollowsAdapter()
 
@@ -37,17 +39,20 @@ class FollowingFragment : Fragment(R.layout.fragment_follow) {
             rvUsers.layoutManager = LinearLayoutManager(activity)
             rvUsers.adapter = adapter
 
-            if (numOfFollowing == 0){
+            if (numOfFollowing == 0) {
                 tvNoDataFollows.visibility = View.VISIBLE
             } else {
                 tvNoDataFollows.visibility = View.GONE
             }
         }
         showLoading(true)
-        viewModel = ViewModelProvider(this,ViewModelProvider.NewInstanceFactory())[FollowingViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        )[FollowingViewModel::class.java]
         searchFollowing()
 
-        adapter.setOnItemClickCallback(object: UserFollowsAdapter.OnItemClickCallback{
+        adapter.setOnItemClickCallback(object : UserFollowsAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserEntity) {
                 Intent(requireContext(), DetailUserActivity::class.java).also {
                     it.putExtra(DetailUserActivity.EXTRA_USERNAME, data.username)
@@ -61,7 +66,7 @@ class FollowingFragment : Fragment(R.layout.fragment_follow) {
     }
 
 
-    private fun searchFollowing(){
+    private fun searchFollowing() {
         viewModel.setListFollowing(username)
         viewModel.getListFollowing().observe(viewLifecycleOwner) {
             if (it != null) {
@@ -74,13 +79,7 @@ class FollowingFragment : Fragment(R.layout.fragment_follow) {
 
 
     private fun showLoading(state: Boolean) {
-        binding?.apply {
-            if (state) {
-                progressBar.visibility = View.VISIBLE
-            } else {
-                progressBar.visibility = View.GONE
-            }
-        }
+        binding?.progressBar?.visibility = if (state) View.VISIBLE else View.GONE
     }
 
 

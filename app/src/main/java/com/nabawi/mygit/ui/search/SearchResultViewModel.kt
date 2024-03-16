@@ -16,28 +16,28 @@ class SearchResultViewModel : ViewModel() {
     private val listUsers = MutableLiveData<ArrayList<UserResponse>>()
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _onFailure = MutableLiveData<Boolean>()
-    val onFailure : LiveData<Boolean> = _onFailure
+    val onFailure: LiveData<Boolean> = _onFailure
 
     private val _totalUserFound = MutableLiveData<Int>()
-    val totalUserFound : LiveData<Int> = _totalUserFound
+    val totalUserFound: LiveData<Int> = _totalUserFound
 
-    fun setSearchUser(query: String){
+    fun setSearchUser(query: String) {
         _onFailure.value = false
         _isLoading.value = true
 
         RetrofitClient.apiInstance
             .getSearchUsers(query)
-            .enqueue(object : Callback<SearchUserResponse>{
+            .enqueue(object : Callback<SearchUserResponse> {
                 override fun onResponse(
                     call: Call<SearchUserResponse>,
                     responseSearch: Response<SearchUserResponse>
                 ) {
                     _isLoading.value = false
                     _onFailure.value = false
-                    if(responseSearch.isSuccessful){
+                    if (responseSearch.isSuccessful) {
                         listUsers.postValue(responseSearch.body()?.listSearchResult)
                         _totalUserFound.value = responseSearch.body()?.totalUserFound
                         Log.e("SearchResult", "onResponse: succes")
@@ -53,7 +53,8 @@ class SearchResultViewModel : ViewModel() {
             })
 
     }
-    fun getSearchUsers(): LiveData<ArrayList<UserResponse>>{
+
+    fun getSearchUsers(): LiveData<ArrayList<UserResponse>> {
         return listUsers
     }
 

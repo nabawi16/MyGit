@@ -19,6 +19,8 @@ class DetailUserActivity : AppCompatActivity() {
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
         val id = intent.getIntExtra(EXTRA_ID, 0)
+        val avatarUrl = intent.getStringExtra(EXTRA_AVATAR_URL)
+        val htmlUrl = intent.getStringExtra(EXTRA_HTML_URL)
 
         val bundle = Bundle()
         bundle.putString(EXTRA_USERNAME, username)

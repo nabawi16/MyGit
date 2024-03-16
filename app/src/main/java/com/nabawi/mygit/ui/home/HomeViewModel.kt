@@ -10,15 +10,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeViewModel : ViewModel(){
+class HomeViewModel : ViewModel() {
 
     private val listUsers = MutableLiveData<ArrayList<UserResponse>>()
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _onFailure = MutableLiveData<Boolean>()
-    val onFailure : LiveData<Boolean> = _onFailure
+    val onFailure: LiveData<Boolean> = _onFailure
 
     companion object {
         private const val TAG = "MainViewModel"
@@ -28,7 +28,7 @@ class HomeViewModel : ViewModel(){
         findUsers()
     }
 
-    fun findUsers(){
+    fun findUsers() {
         _onFailure.value = false
         _isLoading.value = true
 
@@ -41,7 +41,7 @@ class HomeViewModel : ViewModel(){
             ) {
                 _isLoading.value = false
                 _onFailure.value = false
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     listUsers.postValue(response.body())
                 }
 
@@ -57,7 +57,7 @@ class HomeViewModel : ViewModel(){
         })
     }
 
-    fun getListUsers(): LiveData<ArrayList<UserResponse>>{
+    fun getListUsers(): LiveData<ArrayList<UserResponse>> {
         return listUsers
     }
 }

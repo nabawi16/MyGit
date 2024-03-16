@@ -2,17 +2,19 @@ package com.nabawi.mygit.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.nabawi.mygit.R
 import com.nabawi.mygit.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -37,6 +39,9 @@ class MainActivity : AppCompatActivity(){
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val preference = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val isDarkModeActive = preference.getBoolean(resources.getString(R.string.key_dark_mode), false)
+        updateTheme(isDarkModeActive)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -45,10 +50,18 @@ class MainActivity : AppCompatActivity(){
     }
 
     override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen((GravityCompat.START))){
+        if (binding.drawerLayout.isDrawerOpen((GravityCompat.START))) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    private fun updateTheme(isDarkModeActive: Boolean) {
+        if (isDarkModeActive) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

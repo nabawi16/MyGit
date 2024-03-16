@@ -33,16 +33,19 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         usersAdapter = UsersAdapter()
-        homeViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[HomeViewModel::class.java]
+        homeViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(HomeViewModel::class.java)
 
-        usersAdapter.setOnItemClickCallback(object: UsersAdapter.OnItemClickCallback {
+        usersAdapter.setOnItemClickCallback(object : UsersAdapter.OnItemClickCallback {
             override fun onItemClicked(data: UserEntity) {
-                Intent(requireContext(), DetailUserActivity::class.java).also {
-                    it.putExtra(DetailUserActivity.EXTRA_USERNAME, data.username)
-                    it.putExtra(DetailUserActivity.EXTRA_ID, data.id)
-                    it.putExtra(DetailUserActivity.EXTRA_AVATAR_URL, data.avatarUrl)
-                    it.putExtra(DetailUserActivity.EXTRA_HTML_URL, data.htmlUrl)
-                    startActivity(it)
+                Intent(requireContext(), DetailUserActivity::class.java).apply {
+                    putExtra(DetailUserActivity.EXTRA_USERNAME, data.username)
+                    putExtra(DetailUserActivity.EXTRA_ID, data.id)
+                    putExtra(DetailUserActivity.EXTRA_AVATAR_URL, data.avatarUrl)
+                    putExtra(DetailUserActivity.EXTRA_HTML_URL, data.htmlUrl)
+                    startActivity(this)
                 }
             }
         })
@@ -58,15 +61,15 @@ class HomeFragment : Fragment() {
             }
         }
 
-        homeViewModel.isLoading.observe(requireActivity()) {
+        homeViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-        homeViewModel.onFailure.observe(requireActivity()) {
+        homeViewModel.onFailure.observe(viewLifecycleOwner) {
             onFailure(it)
         }
 
-        homeViewModel.getListUsers().observe(requireActivity()) {
-            if (it != null) {
+        homeViewModel.getListUsers().observe(viewLifecycleOwner) { users ->
+            users?.let {
                 onFailure(false)
                 usersAdapter.setList(DataMapper.mapResponsesToEntities(it))
             }
@@ -75,11 +78,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun refreshApp() {
-        binding.apply {
-            swipeToRefresh.setOnRefreshListener {
-                homeViewModel.findUsers()
-                swipeToRefresh.isRefreshing = false
-            }
+        binding.swipeToRefresh.setOnRefreshListener {
+            homeViewModel.findUsers()
+            binding.swipeToRefresh.isRefreshing = false
         }
     }
 
@@ -93,8 +94,8 @@ class HomeFragment : Fragment() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

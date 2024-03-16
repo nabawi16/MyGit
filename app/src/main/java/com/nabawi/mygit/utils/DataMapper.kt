@@ -5,7 +5,7 @@ import com.nabawi.mygit.data.source.remote.responses.UserResponse
 
 object DataMapper {
 
-    fun mapResponseToEntity(response: UserResponse): UserEntity{
+    fun mapResponseToEntity(response: UserResponse): UserEntity {
         return UserEntity(
             response.id,
             response.username,
@@ -14,7 +14,7 @@ object DataMapper {
         )
     }
 
-    fun mapResponsesToEntities(responses: List<UserResponse>): List<UserEntity>{
+    fun mapResponsesToEntities(responses: List<UserResponse>): List<UserEntity> {
         return responses.map {
             mapResponseToEntity(it)
         }

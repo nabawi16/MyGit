@@ -8,7 +8,8 @@ import com.nabawi.mygit.ui.detailuser.followers.FollowersFragment
 import com.nabawi.mygit.ui.detailuser.following.FollowingFragment
 import com.nabawi.mygit.ui.detailuser.profile.ProfileFragment
 
-class SectionsPagerAdapter(activity: AppCompatActivity, data : Bundle) : FragmentStateAdapter(activity) {
+class SectionsPagerAdapter(activity: AppCompatActivity, data: Bundle) :
+    FragmentStateAdapter(activity) {
     private var fragmentBundle: Bundle = data
 
     override fun createFragment(position: Int): Fragment {

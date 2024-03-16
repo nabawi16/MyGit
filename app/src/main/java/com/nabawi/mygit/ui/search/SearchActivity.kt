@@ -22,7 +22,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchResultViewModel: SearchResultViewModel
     private lateinit var searchResultAdapter: UsersAdapter
 
-    private var etQuery : String = ""
+    private var etQuery: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,10 @@ class SearchActivity : AppCompatActivity() {
         supportActionBar?.title = ""
 
         searchResultAdapter = UsersAdapter()
-        searchResultViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[SearchResultViewModel::class.java]
+        searchResultViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        )[SearchResultViewModel::class.java]
         searchResultAdapter.notifyDataSetChanged()
 
         binding.apply {
@@ -97,6 +100,7 @@ class SearchActivity : AppCompatActivity() {
                     return true
 
                 }
+
                 override fun onQueryTextChange(newText: String): Boolean {
                     etQuery = newText
                     searchUser()
@@ -117,13 +121,14 @@ class SearchActivity : AppCompatActivity() {
 
     private fun totalUserCheck(userFound: Int?) {
         binding.apply {
-            if(userFound == 0){
+            if (userFound == 0) {
                 tvNoData.visibility = View.VISIBLE
             } else {
                 tvNoData.visibility = View.GONE
             }
         }
     }
+
     private fun refreshApp() {
         binding.apply {
             swipeToRefresh.setOnRefreshListener {
@@ -132,24 +137,13 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun showLoading(state: Boolean) {
-        binding.apply {
-            if (state) {
-                progressBar.visibility = View.VISIBLE
-            } else {
-                progressBar.visibility = View.GONE
-            }
-        }
+        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun onFailure(fail: Boolean) {
-        binding.apply {
-            if (fail) {
-                tvOnFailMsg.visibility = View.VISIBLE
-            } else {
-                tvOnFailMsg.visibility = View.GONE
-            }
-        }
+        binding.tvOnFailMsg.visibility = if (fail) View.VISIBLE else View.GONE
     }
 
 

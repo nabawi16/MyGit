@@ -16,7 +16,6 @@ data class DetailUserResponse (
 
     @SerializedName("html_url")
     val htmlUrl: String,
-
     val name : String,
     val following: Int,
     val followers: Int,
