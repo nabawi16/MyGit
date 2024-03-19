@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nabawi.mygit.data.model.UserEntity
 import com.nabawi.mygit.data.source.remote.RetrofitClient
-import com.nabawi.mygit.data.source.remote.local.MyGitDao
-import com.nabawi.mygit.data.source.remote.local.MyGitDatabase
+import com.nabawi.mygit.data.source.local.MyGitDao
+import com.nabawi.mygit.data.source.local.MyGitDatabase
 import com.nabawi.mygit.data.source.remote.responses.DetailUserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

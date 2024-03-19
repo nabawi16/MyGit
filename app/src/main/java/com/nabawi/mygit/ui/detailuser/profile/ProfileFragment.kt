@@ -68,8 +68,8 @@ class ProfileFragment : Fragment() {
                         tvDetailFollowers.text = it.followers.toString()
                         tvDetailFollowing.text = it.following.toString()
                         tvDetailRepository.text = it.publicRepos.toString()
-                        tvDetailCompany.text = it.company ?: "-"
-                        tvDetailLocation.text = it.location ?: "-"
+                        tvDetailCompany.text = it.company
+                        tvDetailLocation.text = it.location
 
                         Glide.with(this@ProfileFragment)
                             .load(it.avatarUrl)
@@ -127,7 +127,7 @@ class ProfileFragment : Fragment() {
             btnShare.setOnClickListener {
                 val intent = Intent()
                 intent.action = Intent.ACTION_SEND
-                intent.putExtra(Intent.EXTRA_TEXT, "$username on CodeHub: ${detailUser.htmlUrl}")
+                intent.putExtra(Intent.EXTRA_TEXT, "$username on MyGit: ${detailUser.htmlUrl}")
                 intent.type = "text/plain"
                 startActivity(Intent.createChooser(intent, "Share To:"))
             }

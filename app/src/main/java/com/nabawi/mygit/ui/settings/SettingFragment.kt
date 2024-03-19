@@ -13,7 +13,6 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting, container, false)
     }
 
@@ -21,7 +20,7 @@ class SettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         parentFragmentManager
             .beginTransaction()
-            .replace(R.id.settings_holder, PreferenceFragment())
+            .replace(R.id.settings_holder, PreferenceDataStoreFragment())
             .commit()
     }
 

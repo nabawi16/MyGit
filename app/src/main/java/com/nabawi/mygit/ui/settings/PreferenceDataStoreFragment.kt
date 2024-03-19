@@ -8,7 +8,7 @@ import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.nabawi.mygit.R
 
-class PreferenceFragment : PreferenceFragmentCompat(),
+class PreferenceDataStoreFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var IS_DARK: String
     private lateinit var darkModePreference: SwitchPreference

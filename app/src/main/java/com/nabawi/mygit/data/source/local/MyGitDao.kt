@@ -1,4 +1,4 @@
-package com.nabawi.mygit.data.source.remote.local
+package com.nabawi.mygit.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

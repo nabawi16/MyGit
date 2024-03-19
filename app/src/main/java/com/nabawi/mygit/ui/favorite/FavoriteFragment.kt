@@ -31,7 +31,6 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         usersAdapter = UsersAdapter()
-        usersAdapter.notifyDataSetChanged()
         favoriteViewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
 
         usersAdapter.setOnItemClickCallback(object: UsersAdapter.OnItemClickCallback {

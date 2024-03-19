@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.nabawi.mygit.data.model.UserEntity
-import com.nabawi.mygit.data.source.remote.local.MyGitDao
-import com.nabawi.mygit.data.source.remote.local.MyGitDatabase
+import com.nabawi.mygit.data.source.local.MyGitDao
+import com.nabawi.mygit.data.source.local.MyGitDatabase
 
 class FavoriteViewModel(application: Application): AndroidViewModel(application) {
     private var dao: MyGitDao?
