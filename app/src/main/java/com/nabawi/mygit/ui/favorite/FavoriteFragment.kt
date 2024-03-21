@@ -52,7 +52,7 @@ class FavoriteFragment : Fragment() {
 
             favoriteViewModel.getFavoriteUser()?.observe(requireActivity()) {
                 if (it != null) {
-                    usersAdapter.setList(it)
+                    usersAdapter.submitList(it)
                     if (it.isEmpty()) {
                         tvNoData.visibility = View.VISIBLE
                     } else {

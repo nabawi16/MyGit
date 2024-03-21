@@ -69,7 +69,7 @@ class FollowersFragment : Fragment(R.layout.fragment_follow) {
         viewModel.setListFollowers(username)
         viewModel.getListFollowers().observe(viewLifecycleOwner) {
             if (it != null) {
-                adapter.setList(DataMapper.mapResponsesToEntities(it))
+                adapter.submitList(DataMapper.mapResponsesToEntities(it))
                 showLoading(false)
             } else {
                 viewModel.setListFollowers(username)

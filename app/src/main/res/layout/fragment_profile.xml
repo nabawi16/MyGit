@@ -222,8 +222,8 @@
 
         <ImageView
             android:id="@+id/btn_share"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:contentDescription="@string/share_button"
             android:src="@drawable/ic_share"
             app:layout_constraintStart_toStartOf="parent"

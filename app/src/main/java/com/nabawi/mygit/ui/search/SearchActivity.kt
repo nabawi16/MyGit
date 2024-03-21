@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nabawi.mygit.R
 import com.nabawi.mygit.data.model.UserEntity
 import com.nabawi.mygit.databinding.ActivitySearchBinding
@@ -29,76 +30,58 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = ""
+        }
 
+        initializeRecyclerView()
+        initializeViewModel()
+        initializeSearchView()
+    }
+
+    private fun initializeRecyclerView() {
         searchResultAdapter = UsersAdapter()
+
+        binding.rvUsers.apply {
+            layoutManager = LinearLayoutManager(this@SearchActivity)
+            setHasFixedSize(true)
+            adapter = searchResultAdapter
+        }
+    }
+
+    private fun initializeViewModel() {
         searchResultViewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         )[SearchResultViewModel::class.java]
-        searchResultAdapter.notifyDataSetChanged()
 
-        binding.apply {
-            rvUsers.layoutManager = LinearLayoutManager(this@SearchActivity)
-            rvUsers.setHasFixedSize(true)
-            rvUsers.adapter = searchResultAdapter
-
-        }
-
-        searchResultViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-        searchResultViewModel.onFailure.observe(this) {
-            onFailure(it)
-        }
-        searchResultViewModel.totalUserFound.observe(this) {
-            totalUserCheck(it)
-        }
-
-        searchResultAdapter.setOnItemClickCallback(object : UsersAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: UserEntity) {
-                Intent(this@SearchActivity, DetailUserActivity::class.java).also {
-                    it.putExtra(DetailUserActivity.EXTRA_USERNAME, data.username)
-                    it.putExtra(DetailUserActivity.EXTRA_ID, data.id)
-                    it.putExtra(DetailUserActivity.EXTRA_AVATAR_URL, data.avatarUrl)
-                    it.putExtra(DetailUserActivity.EXTRA_HTML_URL, data.htmlUrl)
-                    startActivity(it)
-                }
-            }
-        })
-
-
-        searchResultViewModel.getSearchUsers().observe(this) {
-            if (it != null) {
-                searchResultAdapter.setList(DataMapper.mapResponsesToEntities(it))
+        searchResultViewModel.apply {
+            isLoading.observe(this@SearchActivity) { showLoading(it) }
+            onFailure.observe(this@SearchActivity) { onFailure(it) }
+            totalUserFound.observe(this@SearchActivity) { totalUserCheck(it) }
+            getSearchUsers().observe(this@SearchActivity) {
+                searchResultAdapter.submitList(DataMapper.mapResponsesToEntities(it))
             }
         }
-        refreshApp()
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.search_menu, menu)
-
+    private fun initializeSearchView() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.search).actionView as SearchView
+        val searchView = (menuInflater.inflate(R.menu.search_menu, null) as? SearchView)
 
-        searchView.apply {
+        searchView?.apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             queryHint = resources.getString(R.string.search_hint)
             setIconifiedByDefault(false)
             onActionViewExpanded()
 
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
                 override fun onQueryTextSubmit(query: String): Boolean {
                     etQuery = query
                     searchUser()
                     clearFocus()
                     return true
-
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
@@ -108,34 +91,29 @@ class SearchActivity : AppCompatActivity() {
                 }
             })
         }
-        return true
+
+        supportActionBar?.apply {
+            setDisplayShowCustomEnabled(true)
+            customView = searchView
+        }
+    }
+
+    private fun navigateToDetailUser(userEntity: UserEntity) {
+        Intent(this@SearchActivity, DetailUserActivity::class.java).apply {
+            putExtra(DetailUserActivity.EXTRA_USERNAME, userEntity.username)
+            putExtra(DetailUserActivity.EXTRA_ID, userEntity.id)
+            putExtra(DetailUserActivity.EXTRA_AVATAR_URL, userEntity.avatarUrl)
+            putExtra(DetailUserActivity.EXTRA_HTML_URL, userEntity.htmlUrl)
+            startActivity(this)
+        }
     }
 
     private fun searchUser() {
-        binding.apply {
-            rvUsers.adapter = searchResultAdapter
-            searchResultAdapter.clearList()
-            searchResultViewModel.setSearchUser(etQuery)
-        }
+        searchResultViewModel.setSearchUser(etQuery)
     }
 
     private fun totalUserCheck(userFound: Int?) {
-        binding.apply {
-            if (userFound == 0) {
-                tvNoData.visibility = View.VISIBLE
-            } else {
-                tvNoData.visibility = View.GONE
-            }
-        }
-    }
-
-    private fun refreshApp() {
-        binding.apply {
-            swipeToRefresh.setOnRefreshListener {
-                searchResultViewModel.setSearchUser(etQuery)
-                swipeToRefresh.isRefreshing = false
-            }
-        }
+        binding.tvNoData.visibility = if (userFound == 0) View.VISIBLE else View.GONE
     }
 
     private fun showLoading(state: Boolean) {
@@ -146,6 +124,9 @@ class SearchActivity : AppCompatActivity() {
         binding.tvOnFailMsg.visibility = if (fail) View.VISIBLE else View.GONE
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        return true
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

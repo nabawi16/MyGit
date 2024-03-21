@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
         homeViewModel.getListUsers().observe(viewLifecycleOwner) { users ->
             users?.let {
                 onFailure(false)
-                usersAdapter.setList(DataMapper.mapResponsesToEntities(it))
+                usersAdapter.submitList(DataMapper.mapResponsesToEntities(it))
             }
         }
         refreshApp()

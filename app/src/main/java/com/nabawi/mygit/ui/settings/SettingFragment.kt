@@ -20,7 +20,7 @@ class SettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         parentFragmentManager
             .beginTransaction()
-            .replace(R.id.settings_holder, PreferenceFragment())
+            .replace(R.id.settings_holder, PreferenceDataStoreFragment())
             .commit()
     }
 
