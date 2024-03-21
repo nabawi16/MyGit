@@ -31,6 +31,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         usersAdapter = UsersAdapter()
+        usersAdapter.notifyDataSetChanged()
         favoriteViewModel = ViewModelProvider(this)[FavoriteViewModel::class.java]
 
         usersAdapter.setOnItemClickCallback(object: UsersAdapter.OnItemClickCallback {
@@ -51,7 +52,7 @@ class FavoriteFragment : Fragment() {
 
             favoriteViewModel.getFavoriteUser()?.observe(requireActivity()) {
                 if (it != null) {
-                    usersAdapter.setList(it)
+                    usersAdapter.submitList(it)
                     if (it.isEmpty()) {
                         tvNoData.visibility = View.VISIBLE
                     } else {
